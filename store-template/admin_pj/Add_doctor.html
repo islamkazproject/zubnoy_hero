@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Страница администратора</title>
+	<link rel="stylesheet" type="text/css" href="../admin_style.css">
+	<!-- <script type="text/javascript" src="add_doctor.js"></script> -->
+</head>
+<body>
+
+		
+	<nav class="navbar">
+		<ul>
+		  <li><a href="/">Клиенты</a></li>
+		  <li><a href="/add/new_doctor">Врачи </a></li>
+		  <li><a href="/add/new_admin">Администраторы</a></li>
+		  <li><a href="/admin">Добавить новые даты </a></li>
+		</ul>
+	</nav><br>
+
+	<h1>Добро пожаловать на страницу администратора!</h1>
+
+	<div class="content-wrapper">
+
+		<div class="table-wrapper">
+			<h2>Список врачей:</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>ФИО</th>
+						<th>Стаж</th>
+                        <th>номер</th>
+						<th>почта</th>
+						<th>пароль</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% for(var i = 0; i < results.length; i++) { %>
+					<tr>
+						<td><%= results[i].id %></td>
+						<td><%= results[i].name %></td>
+						<td><%= results[i].year %></td>
+						<td><%= results[i].phone_number %></td>
+						<td><%= results[i].email %></td>
+						<td><%= results[i].password %></td>
+					</tr>
+					<% } %>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="form-wrapper">
+            <br>
+            <a href="..\Logout.html" class="logout-button">Выход</a>
+            <br>
+
+
+			<h2>Добавление нового врача:</h2>
+			<form action="add_doctor" method="POST" id="add-doctor-form">
+				<label for="doctor-name">ФИО:</label>
+				<input type="name" id="doctor-name" name="name"><br>
+
+				<label for="year">Стаж работы:</label>
+				<input type="number" id="doctor-year" name="year"><br>
+
+				<label for="password">Пароль:</label>
+				<input type="password" id="doctor-pass" name="pass"><br>
+
+				<label for="doctor-email">Email:</label>
+				<input type="email" id="doctor-email" name="email"><br>
+
+				<label for="doctor-phone">Телефон:</label>
+				<input type="phone" id="doctor-phone" name="phone"><br>
+
+				<input type="submit" value="Добавить врача">
+			</form>
+			
+			<h2>Удаление пользователя:</h2>
+			<form action="delete_client" method="POST" id="delete-client-form">
+				<label for="client-id">ID клиента:</label>
+				<input type="number" id="client-id" name="id"><br>
+				
+				<input type="submit" value="Удалить клиента">
+			</form>
+
+			<script>
+
+				const addAdmin = async () => {
+					const name = document.querySelector('#doctor-name').value;
+					const year = document.querySelector('#doctor-year').value;
+					const email = document.querySelector('#doctor-email').value;
+					const password = document.querySelector('#doctor-pass').value;
+					const phone_number = document.querySelector('#doctor-phone').value;
+					const role = 'doctor';
+
+					console.log("doctor add :" + name);
+
+					const response = await fetch('http://localhost:8080/add/add_doctor', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ name, year, email, password, phone_number, role }),
+					});
+
+					if (response.ok) {
+						console.log('Доктор успешно добавлен');
+						window.location.assign('http://localhost:8080/add/new_doctor');// автоматически обновляем страницу
+					} else {
+						console.error('Ошибка при добавлении админа');
+					}
+				};
+
+				// Функция для удаления клиента
+				const deleteClient = async () => {
+					const id = document.querySelector('#client-id').value;
+					console.log("Id выбранного клиента которого необходимо удалить: " + id)
+
+					const response = await fetch('http://localhost:8080/delete_doctor', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ id }),
+					});
+
+					if (response.ok) {
+						console.log('Клиент успешно удален');
+						location.reload(); // автоматически обновляем страницу
+					} else {
+						console.error('Ошибка при удалении клиента');
+					}
+				};
+
+				document.addEventListener('DOMContentLoaded', () => {//Это гарантирует, что скрипт будет запущен только после того, как загрузится HTML-документ.  
+					const deleteClientForm = document.querySelector('#delete-client-form');
+					deleteClientForm.addEventListener('submit', async (event) => {
+						event.preventDefault();
+						await deleteClient();
+					});
+					const addDoctorForm = document.querySelector('#add-doctor-form');
+					addDoctorForm.addEventListener('submit', async (event) => {
+						event.preventDefault();
+						await addAdmin();
+					});
+
+				});
+
+			</script>
+
+        </div>
+    
+    </div>
+</body>
+</html>

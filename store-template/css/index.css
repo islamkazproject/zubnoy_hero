@@ -1,0 +1,47 @@
+body {
+    background: url("../vendor/img/dental.jpg") no-repeat center top fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    padding-top: 50px;
+    font-family: Arial, sans-serif;
+
+}
+
+#start-purchase-btn {
+    background-color: #23364e;
+    border-color: #23364e;
+    color: white;
+}
+
+#start-purchase-link {
+    text-decoration: none;
+    color: white;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+button.btn-lg {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 30px;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border: none;
+}
+
+button.btn-lg:hover {
+    background-color: #0069d9;
+    cursor: pointer;
+}
